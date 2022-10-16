@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+import "react-native-url-polyfill/auto";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,14 +9,19 @@ import Auth from "./views/Auth";
 export default function App() {
     const [session, setSession] = useState({});
 
-    useEffect(() => {
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            setSession(session);
-        });
+    async function load() {
+        let { data, error } = await supabase.auth.getSession();
+        console.log(error);
+        setSession(data);
 
         supabase.auth.onAuthStateChange((_event, session) => {
+            console.log(_event);
             setSession(session);
         });
+    }
+
+    useEffect(() => {
+        load();
     }, []);
 
     return (
