@@ -1,6 +1,9 @@
-import { StyleSheet, Text, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function TaskButton() {
+export default function TaskButton({ task }) {
+    const navigation = useNavigation();
+
     let energyRequired = 3;
     let energyRequiredComps = [];
 
@@ -9,11 +12,14 @@ export default function TaskButton() {
     }
 
     return (
-        <View style={styles.container}>
+        <TouchableOpacity
+            style={styles.container}
+            onPress={() => navigation.navigate("TaskView", { task })}
+        >
             <View style={styles.taskGenre} />
-            <Text style={styles.taskDescription}>Hello</Text>
+            <Text style={styles.taskDescription}>{task.description}</Text>
             <View style={styles.energyIndicators}>{energyRequiredComps}</View>
-        </View>
+        </TouchableOpacity>
     );
 }
 

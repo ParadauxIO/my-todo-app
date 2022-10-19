@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Alert,
     StyleSheet,
@@ -13,6 +13,15 @@ export default function Auth() {
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
     let [loading, setLoading] = useState(false);
+
+    async function load() {
+        setPassword("test1234");
+        setEmail("rian@paradaux.io");
+    }
+
+    useEffect(() => {
+        load();
+    }, []);
 
     async function signInWithEmail() {
         setLoading(true);
@@ -49,7 +58,6 @@ export default function Auth() {
                 value={password}
                 onChangeText={setPassword}
             />
-            <Text>{email}</Text>
 
             <TouchableOpacity
                 style={[styles.button, styles.buttonActive]}
@@ -73,6 +81,7 @@ const styles = StyleSheet.create({
     header: {
         color: "white",
         fontSize: 30,
+        marginTop: 23,
     },
 
     loginContainer: {

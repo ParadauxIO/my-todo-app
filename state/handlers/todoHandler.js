@@ -1,11 +1,13 @@
 import { supabase } from "../supabase";
 
-// let getTodoItems = () => {
-//     let { data, error } = supabase.from("todo_items").select();
+let getTodoItems = async () => {
+    let { data, error } = await supabase.from("todo_items").select();
 
-//     if (error) {
-//         console.log(error);
-//     }
+    if (error) {
+        console.log(error);
+    }
 
-//     return data;
-// };
+    return data;
+};
+
+export { getTodoItems };

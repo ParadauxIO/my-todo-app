@@ -1,10 +1,16 @@
 import "react-native-url-polyfill/auto";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import TaskButton from "./components/TaskButton";
 import { supabase } from "./state/supabase";
 import Auth from "./views/Auth";
+import Home from "./views/Home";
+import { StyleSheet } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import TaskView from "./views/TaskView";
+import { StatusBar } from "expo-status-bar";
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
     const [session, setSession] = useState({});
@@ -26,25 +32,18 @@ export default function App() {
 
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar hidden={true} />
             {session && session.user ? (
-                <View style={styles.background}>
-                    <View style={styles.header}>
-                        <Text style={styles.headerText}>To Do App</Text>
-                    </View>
-                    <View style={styles.dayButtons}>
-                        <Text style={[styles.button, styles.buttonActive]}>
-                            today
-                        </Text>
-                        <Text style={styles.button}>tomorrow</Text>
-                        <Text style={styles.button}>saturday</Text>
-                    </View>
-                    <View style={styles.tasks}>
-                        <TaskButton />
-                        <TaskButton />
-                        <TaskButton />
-                        <TaskButton />
-                    </View>
-                </View>
+                <NavigationContainer>
+                    <Stack.Navigator
+                        screenOptions={{
+                            headerShown: false,
+                        }}
+                    >
+                        <Stack.Screen name="Home" component={Home} />
+                        <Stack.Screen name="TaskView" component={TaskView} />
+                    </Stack.Navigator>
+                </NavigationContainer>
             ) : (
                 <Auth />
             )}
@@ -54,44 +53,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-    },
-    background: {
-        flex: 1,
-        backgroundColor: "#141414",
-    },
-    header: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    headerText: {
-        color: "#6f9ec4",
-        fontSize: 24,
-        fontWeight: "bold",
-        marginTop: 20.5,
-    },
-    dayButtons: {
-        flexDirection: "row",
-        marginLeft: 18,
-        marginTop: 18,
-    },
-    button: {
-        paddingLeft: 12,
-        paddingRight: 12,
-        paddingTop: 5,
-        paddingBottom: 5,
-        color: "white",
-        backgroundColor: "#181818",
-        borderRadius: 12,
-        margin: 5,
-        textTransform: "uppercase",
-    },
-    buttonActive: {
-        backgroundColor: "#78ACD5",
-        color: "black",
-    },
-    tasks: {
         flex: 1,
     },
 });
